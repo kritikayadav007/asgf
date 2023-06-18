@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Download
+        run: curl -LO https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
+
+      - name: Extract
+        run: unzip ngrok-stable-darwin-amd64.zip
+        
+      - name: just
+        run: ls ./ngrok
+
+      - name: Auth
+        run: ./ngrok authtoken $NGROK_AUTH_TOKEN
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+
+      - name: Enable TS
+        run: sudo systemsetup -setremotelogin on
+      - run: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /usr/libexec/rapportd
+      - run: sudo dseditgroup -o edit -n /Local/Default -a everyone -t group com.apple.access_ssh        
+      - run: sudo sysadminctl -addUser runneradmin -password "P@ssw0rd!" -admin
+
+
+      - name: Create Tunnel
+        run: ./ngrok tcp 3389
+
