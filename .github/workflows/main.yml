@@ -23,8 +23,11 @@ jobs:
 
       - name: Enable TS
         run: sudo systemsetup -setremotelogin on
+        
       - run: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /usr/libexec/rapportd
+      
       - run: sudo dseditgroup -o edit -n /Local/Default -a everyone -t group com.apple.access_ssh        
+      
       - run: sudo sysadminctl -addUser runneradmin -password "P@ssw0rd!" -admin
 
 
