@@ -10,7 +10,7 @@ jobs:
 
 
     runs-on: windows-latest
-
+    timeout-minutes: 4 
 
     steps:
 
